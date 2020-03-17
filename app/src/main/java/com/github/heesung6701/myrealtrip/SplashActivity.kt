@@ -3,6 +3,7 @@ package com.github.heesung6701.myrealtrip
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.github.heesung6701.myrealtrip.main.MainActivity
 import java.util.*
 
 class SplashActivity : AppCompatActivity() {
