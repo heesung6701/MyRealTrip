@@ -4,4 +4,6 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="string_splash_text">최신 뉴스를 제공합니다.\n뉴스의 키워드를 알아보세요.</string>
+    <string name="string_version">v1.0</string>
 </resources>
