@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".detail.DetailActivity">
+
+        <ImageView
+            android:id="@+id/iv_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            tools:src="@drawable/img_news" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="갤럭시S 신제품은 '갤럭시S20' ... 실물 사진 유출..." />
+
+        <LinearLayout
+            android:id="@+id/layout_keywords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_keyword_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/shape_rect_rounded_16"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="3dp"
+                tools:text="갤럭시S20" />
+
+            <TextView
+                android:id="@+id/tv_keyword_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/shape_rect_rounded_16"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="3dp"
+                tools:text="모델로" />
+
+            <TextView
+                android:id="@+id/tv_keyword_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/shape_rect_rounded_16"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="3dp"
+                tools:text="카메라" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="16sp"
+            tools:text="삼성전자가 다음 달 공개할 예정인 차가 갤럭시 S시리즈 중 한 모델로 추정되는 사진(사진)이 유출됐다...." />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
