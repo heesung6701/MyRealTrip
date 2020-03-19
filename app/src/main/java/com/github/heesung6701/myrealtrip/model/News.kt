@@ -2,13 +2,7 @@ package com.github.heesung6701.myrealtrip.model
 
 import android.os.Parcel
 import android.os.Parcelable
-<<<<<<< HEAD
-
-data class News(val thumbnail: String, val title: String, val content: String) : Parcelable{
-    val keywords : List<String>
-
-    init {
-=======
+import android.util.Log
 import java.util.*
 
 data class News(val title: String, val content: String, val thumbnail: String) : Parcelable{
