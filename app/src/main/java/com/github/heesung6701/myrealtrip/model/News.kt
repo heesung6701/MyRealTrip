@@ -2,11 +2,32 @@ package com.github.heesung6701.myrealtrip.model
 
 import android.os.Parcel
 import android.os.Parcelable
+<<<<<<< HEAD
 
 data class News(val thumbnail: String, val title: String, val content: String) : Parcelable{
     val keywords : List<String>
 
     init {
+=======
+import java.util.*
+
+data class News(val title: String, val content: String, val thumbnail: String) : Parcelable{
+    init {
+        updateKeyword(content)
+    }
+    var keywords: List<String>? = null
+
+    private fun updateKeyword(content: String){
+        val items = content.split(" ").fold(HashMap<String, Int>()){ acc, str ->
+            acc[str]?.plus(1)?: acc.put(str, 1)
+            return
+        }
+        /*val queue = content.split(" ").fold(PriorityQueue<Pair<String, Int>>()) { q : PriorityQueue<Pair<String, Int>>, str ->
+            val cnt = q.
+            q.put(Pair(str, )
+            q.put(str)
+        }*/
+>>>>>>> 2bef209... temp
         keywords = listOf("dummy1", "dummy2", "dummy3")
     }
 
