@@ -33,7 +33,7 @@ class NewsListAdapter(private val context: Context, private val dataList: List<N
         val item = dataList[position]
         holder.setTitle(item.title)
         holder.setContent(item.content)
-        holder.setKeywords(item.keywords ?: listOf())
+        holder.setKeywords(item.keywords)
         holder.setThumbnail(
             Glide.with(context)
                 .load(item.thumbnail)
@@ -42,7 +42,7 @@ class NewsListAdapter(private val context: Context, private val dataList: List<N
         )
         holder.setOnClickListener{
             val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra(News.INTENT_NAME, dataList[position])
+            intent.putExtra("url", dataList[position].link)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
