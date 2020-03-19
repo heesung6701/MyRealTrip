@@ -1,13 +1,19 @@
 package com.github.heesung6701.myrealtrip.model
 
-import android.util.Log
 import java.util.*
 import kotlin.collections.ArrayList
 
-data class News(val link: String, val title: String, val content: String, val thumbnail: String){
-    var keywords: List<String>
+data class News(val link: String, val title: String){
+    var keywords: List<String> = emptyList()
 
-    init {
+    var content: String? = null
+    set(value) {
+        value?.let { getKeyword(it) }
+        field = value
+    }
+    var thumbnail: String? = null
+
+    private fun getKeyword(content: String){
         val items = content.split(" ","[","]","(",")").fold(HashMap<String, Int>()) { acc, str ->
             acc[str]?.plus(1) ?: acc.put(str, 1)
             return@fold acc
@@ -17,13 +23,12 @@ data class News(val link: String, val title: String, val content: String, val th
             -it.second
         })
         for ((k, v) in items) {
-            pq.add(Pair<String, Int>(k, v))
+            pq.add(Pair(k, v))
         }
-        val list: ArrayList<String> = ArrayList<String>(3)
+        val list: ArrayList<String> = ArrayList(3)
         for (i in 1..3) {
             list.add(pq.poll()?.first ?: "")
         }
         keywords = list.toList()
-        Log.e("~~~~", keywords.toString())
     }
 }
