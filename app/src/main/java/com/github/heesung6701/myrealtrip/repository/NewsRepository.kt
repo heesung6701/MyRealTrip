@@ -1,16 +1,18 @@
 package com.github.heesung6701.myrealtrip.repository
 
-import android.os.AsyncTask
 import android.util.Log
 import com.github.heesung6701.myrealtrip.model.News
 import com.github.heesung6701.myrealtrip.network.NetworkHelper
 import com.github.heesung6701.myrealtrip.network.dto.Rss
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
 
 class NewsRepository {
@@ -43,7 +45,8 @@ class NewsRepository {
                 var cnt = news.size
                 news.forEach {
                     val link = it.link ?: return
-                    MyTask { list ->
+                    GlobalScope.launch(Dispatchers.Main) {
+                        val list = getOGTag(link)
                         cnt --
                         if(list?.get(0) == null){
                             Log.e("~~", list.toString())
@@ -58,7 +61,7 @@ class NewsRepository {
                         )
                         if(cnt == 0)
                             onFinish(col)
-                    }.execute(link)
+                    }
                 }
             }
 
@@ -69,45 +72,34 @@ class NewsRepository {
         }
         call.enqueue(callback)
     }
+    private suspend fun getOGTag(url: String): List<String>?{
+        return withContext(Dispatchers.IO) {
+            var imageUrl = ""
+            var content = ""
 
-}
-
-// TODO NOT USER ASYNC TASK
-private class MyTask(val callback: (List<String>?) -> Unit) : AsyncTask<String?, Void?, List<String>?>() {
-
-    override fun onPostExecute(result: List<String>?) { //if you had a ui element, you could display the title
-        callback(result)
-    }
-
-    override fun doInBackground(vararg params: String?): List<String>? {
-        return getOGTag(params[0].toString())
-    }
-    private fun getOGTag(url: String): List<String>?{
-
-        var imageUrl = ""
-        var content = ""
-
-        try {
             val con: Connection = Jsoup.connect(url)
-            val doc = con.get()
-            val ogTags = doc.select("meta[property^=og:]")
-            if (ogTags.size <= 0) {
-                return null
-            }
+            try{
+                val doc = con.get()
+                val ogTags = doc.select("meta[property^=og:]")
+                if (ogTags.size <= 0) {
+                    null
+                } else {
+                    ogTags.forEach { tag ->
+                        when (tag.attr("property")) {
+                            "og:image" -> {
+                                imageUrl = tag.attr("content")
+                            }
+                            "og:description" -> {
+                                content = tag.attr("content")
+                            }
+                        }
+                    }
 
-            ogTags.forEach { tag ->
-                when (tag.attr("property")) {
-                    "og:image" -> {
-                        imageUrl = tag.attr("content")
-                    }
-                    "og:description" -> {
-                        content = tag.attr("content")
-                    }
+                    listOf(content, imageUrl)
                 }
+            } catch (e: Exception) {
+                null
             }
-            return listOf(content, imageUrl)
-        } catch (e: IOException) {
-            return null
         }
     }
 }
