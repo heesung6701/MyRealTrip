@@ -15,14 +15,18 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val news = intent.getParcelableExtra<News>(News.INTENT_NAME)
+        val news = intent.getParcelableExtra<News?>(News.INTENT_NAME)
+        if(news == null){
+            finish()
+            return
+        }
         with(news) {
             tv_title.text = title
             tv_content.text = content
         }
         Glide.with(this).load(news.thumbnail).into(iv_thumbnail)
         val ivList = listOf<TextView>(tv_keyword_1, tv_keyword_2, tv_keyword_3)
-        news.keywords.forEachIndexed { index, keyword ->
+        news.keywords?.forEachIndexed { index, keyword ->
             ivList[index].text = keyword
         }
     }

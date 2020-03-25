@@ -33,7 +33,7 @@ class NewsListAdapter(private val context: Context, private val dataList: List<N
         val item = dataList[position]
         holder.setTitle(item.title)
         holder.setContent(item.content)
-        holder.setKeywords(item.keywords)
+        holder.setKeywords(item.keywords ?: listOf())
         holder.setThumbnail(
             Glide.with(context)
                 .load(item.thumbnail)
