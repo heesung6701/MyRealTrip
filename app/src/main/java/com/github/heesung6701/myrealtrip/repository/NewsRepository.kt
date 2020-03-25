@@ -50,6 +50,7 @@ class NewsRepository {
                         }
                         col.add(
                             News(
+                                link = it.link.toString(),
                                 title = it.title.toString(),
                                 content = list?.get(0)?:"error",
                                 thumbnail = list?.get(1)?:""
@@ -57,7 +58,7 @@ class NewsRepository {
                         )
                         if(cnt == 0)
                             onFinish(col)
-                    }.execute(link);
+                    }.execute(link)
                 }
             }
 
