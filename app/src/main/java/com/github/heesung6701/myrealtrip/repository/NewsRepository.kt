@@ -16,7 +16,7 @@ import retrofit2.Response
 
 
 class NewsRepository {
-    fun getList(onFinish: (List<News>?) -> Unit) {
+    fun getList(onUpdate: () -> Unit, onFinish: (List<News>?) -> Unit) {
         val call: Call<Rss> = NetworkHelper.apiService.getNewsList()
 
         val callback: Callback<Rss> = object : Callback<Rss> {
@@ -41,28 +41,20 @@ class NewsRepository {
                     onFailure(call, Exception("XML PARSE ERROR : No News Error"))
                     return
                 }
-                val col = ArrayList<News>()
-                var cnt = news.size
-                news.forEach {
+                val col = news.map {  News(link = it.link.toString(),title = it.title.toString()) }
+                col.forEach {
                     val link = it.link ?: return
                     GlobalScope.launch(Dispatchers.Main) {
                         val list = getOGTag(link)
-                        cnt --
-                        if(list?.get(0) == null){
-                            Log.e("~~", list.toString())
+                        if(list?.size != 2) return@launch
+                        with(it) {
+                            content = list[0]
+                            thumbnail = list[1]
                         }
-                        col.add(
-                            News(
-                                link = it.link.toString(),
-                                title = it.title.toString(),
-                                content = list?.get(0)?:"error",
-                                thumbnail = list?.get(1)?:""
-                            )
-                        )
-                        if(cnt == 0)
-                            onFinish(col)
+                        onUpdate()
                     }
                 }
+                onFinish(col)
             }
 
             override fun onFailure(call: Call<Rss>, t: Throwable) {

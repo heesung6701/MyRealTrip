@@ -2,16 +2,10 @@ package com.github.heesung6701.myrealtrip.main.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.github.heesung6701.myrealtrip.R
 import com.github.heesung6701.myrealtrip.detail.DetailActivity
 import com.github.heesung6701.myrealtrip.model.News
@@ -32,7 +26,7 @@ class NewsListAdapter(private val context: Context, private val dataList: List<N
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val item = dataList[position]
         holder.setTitle(item.title)
-        holder.setContent(item.content)
+        holder.setContent(item.content?:"")
         holder.setKeywords(item.keywords)
         holder.setThumbnail(
             Glide.with(context)

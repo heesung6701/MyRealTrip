@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private val list = mutableListOf<News>()
 
-    private var adapter : NewsListAdapter by Delegates.notNull()
+    private var adapter: NewsListAdapter by Delegates.notNull()
     private val newsRepository = NewsRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,14 +34,16 @@ class MainActivity : AppCompatActivity() {
         }
         updateList()
     }
+
     private fun updateList() {
         layout_swipe_refresh.isRefreshing = true
-        newsRepository.getList {
-            if(it == null) return@getList
-            list.clear()
-            list.addAll(it)
-            adapter.notifyDataSetChanged()
-            layout_swipe_refresh.isRefreshing = false
-        }
+        newsRepository.getList(onUpdate = { adapter.notifyDataSetChanged() },
+            onFinish = {
+                if (it == null) return@getList
+                list.clear()
+                list.addAll(it)
+                adapter.notifyDataSetChanged()
+                layout_swipe_refresh.isRefreshing = false
+            })
     }
 }
