@@ -8,13 +8,17 @@ data class News(val link: String, val title: String){
 
     var content: String? = null
     set(value) {
-        value?.let { updateKeyword(it) }
+        value?.let {
+            if(it.isBlank()) return@let
+            updateKeyword(it)
+        }
         field = value
     }
     var thumbnail: String? = null
 
     private fun updateKeyword(content: String){
-        val items = content.split("[^ㄱ-ㅎ가-힣ㅏ-ㅣa-zA-Z0-9]".toRegex()).fold(HashMap<String, Int>()) { acc, str ->
+        val items = content.split("[^ㄱ-ㅎ^가-힣ㅏ-ㅣa-zA-Z0-9]".toRegex()).fold(HashMap<String, Int>()) { acc, str ->
+            if(str=="") return@fold acc
             acc[str]?.plus(1) ?: acc.put(str, 1)
             return@fold acc
         }
