@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.heesung6701.myrealtrip.R
 import com.github.heesung6701.myrealtrip.main.adapter.NewsListAdapter
 import com.github.heesung6701.myrealtrip.model.News
-import com.github.heesung6701.myrealtrip.network.NetworkHelper
 import com.github.heesung6701.myrealtrip.repository.NewsRepository
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.properties.Delegates
