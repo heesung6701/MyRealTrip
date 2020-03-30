@@ -7,6 +7,7 @@ import com.github.heesung6701.myrealtrip.R
 import com.github.heesung6701.myrealtrip.main.adapter.NewsListAdapter
 import com.github.heesung6701.myrealtrip.model.News
 import com.github.heesung6701.myrealtrip.repository.NewsRepository
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.properties.Delegates
 
@@ -14,8 +15,10 @@ class MainActivity : AppCompatActivity() {
 
     private val list = mutableListOf<News>()
 
-    private var adapter: NewsListAdapter by Delegates.notNull()
     private val newsRepository = NewsRepository()
+    private val compositeDisposable = CompositeDisposable()
+
+    private var adapter: NewsListAdapter by Delegates.notNull()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateList() {
         layout_swipe_refresh.isRefreshing = true
-        newsRepository.getList(onUpdate = { adapter.notifyDataSetChanged() },
+        val disposable = newsRepository.getList(onUpdate = { adapter.notifyDataSetChanged() },
             onFinish = {
                 if (it == null) return@getList
                 list.clear()
@@ -44,5 +47,11 @@ class MainActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
                 layout_swipe_refresh.isRefreshing = false
             })
+        compositeDisposable.add(disposable)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 }
